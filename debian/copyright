@@ -5,14 +5,12 @@ Source: https://github.com/crosstool-ng/crosstool-ng
 Files: *
 Copyright: 2015 Crosstool-NG Developers
 License: GPL-2.0+
- /usr/share/common-licenses/GPL-2
 
 Files: debian/*
 Copyright:
   2015 Andrew 'Necromant' Andrianov <andrew@ncrmnt.org>
   2017 Several Candidates <open@example.com>
 License: GPL-2.0+
- /usr/share/common-licenses/GPL-2
 
 
 Files: docs/*
@@ -66,3 +64,6 @@ License: Various
  (either manualy, or by instructing crosstool-NG to do so), you will have to
  make those patches available alongside with your toolchain, to comply with
  the licenses of the components impacted by your patches.
+
+License: GPL-2.0+
+ /usr/share/common-licenses/GPL-2

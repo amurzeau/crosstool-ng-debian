@@ -1,1 +1,3 @@
 0001-Disable-MAKELEVEL-check.patch
+0002-Makefile.in-remove-recursive-part.patch
+0003-Backport-commit-Fix-debuild-warnings-errors.patch

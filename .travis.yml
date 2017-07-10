@@ -1,0 +1,17 @@
+sudo: required
+language: generic
+
+before_install:
+  - echo $LANG
+  - echo $LC_ALL
+  - echo $USER
+
+script:
+  - ./travis-build/build.sh
+
+deploy:
+  provider: script
+  script: ./travis-build/deploy.sh
+  skip_cleanup: true
+  on:
+    tags: true

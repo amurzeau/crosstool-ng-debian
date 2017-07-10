@@ -9,8 +9,6 @@
 # package maintainers to append LDFLAGS
 #export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
-MAKELEVEL=0
-
 # main packaging script based on dh7 syntax
 %:
 	dh $@ --with autoreconf
@@ -18,6 +16,8 @@ MAKELEVEL=0
 # Make sure we call ./bootstrap before running dh_auto_configure
 override_dh_auto_configure:
 	test -e configure || ./bootstrap
+	printf "echo %s-%s\n" $(shell dpkg-parsechangelog -SSource) $(shell dpkg-parsechangelog -SVersion) > version.sh
+	chmod a+x version.sh
 	dh_auto_configure
 
 #Make sure to include bash completion file in the package

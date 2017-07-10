@@ -1,0 +1,13 @@
+set +ex
+# Use dedicated directory, else the source tree can cause issues as ct-ng will try to use files provided in current directory.
+mkdir "${AUTOPKGTEST_TMP}/build" && cd "$_"
+env
+ct-ng arm-unknown-eabi &&
+sed -i -e 's/^.*\(CT_LOG_LEVEL_MAX\).*$/\1="DEBUG"/' \
+        -e 's/^.*\(CT_LOG_PROGRESS_BAR\).*$/# \1 is not set/' \
+        -e 's/^.*\(CT_FORBID_DOWNLOAD\).*$/# \1 is not set/' \
+        -e 's/^.*\(CT_LOCAL_TARBALLS_DIR\).*$/\1="\/cache\/tarballs"/' \
+        -e 's/^.*\(CT_SAVE_TARBALLS\).*$/\1=y/' \
+.config &&
+echo 'CT_PREFIX="${AUTOPKGTEST_TMP}/x-tools"' >> .config &&
+ct-ng build
