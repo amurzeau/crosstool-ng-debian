@@ -1,0 +1,26 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+#DH_VERBOSE = 1
+
+# see ENVIRONMENT in dpkg-buildflags(1) and https://wiki.debian.org/HardeningWalkthrough#Enabling_dpkg-buildflags_in_your_debian.2Frules_files
+# package maintainers to append CFLAGS
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+# package maintainers to append LDFLAGS
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+MAKELEVEL=0
+
+# main packaging script based on dh7 syntax
+%:
+	dh $@ --with autoreconf
+
+# Make sure we call ./bootstrap before running dh_auto_configure
+override_dh_auto_configure:
+	test -e configure || ./bootstrap
+	dh_auto_configure
+
+#Make sure to include bash completion file in the package
+#Boverride_dh_auto_install:
+#	MAKELEVEL=0 dh_auto_install
+#	install -D -m 0644 ct-ng.comp $$(pwd)/debian/crosstool-ng/usr/share/bash-completion/completions/ct-ng.comp
