@@ -2,9 +2,8 @@ From: Alexis Murzeau <amubtdx@outlook.fr>
 Date: Tue, 11 Jul 2017 02:06:09 +0200
 Subject: Backport commit "Fix debuild warnings/errors"
 
-Commit-id: 1b4e784a0ba636646def1db5ca012fd54ee7a81c
 ---
- Makefile.in                                        |   5 +-
+ Makefile.in                                        |  24 ++--
  configure.ac                                       |   4 +-
  ct-ng.in                                           |   4 +-
  docs/ct-ng.1.in                                    |  87 ++++++---------
@@ -21,17 +20,30 @@ Commit-id: 1b4e784a0ba636646def1db5ca012fd54ee7a81c
  scripts/saveSample.sh.in                           |   2 -
  scripts/showConfig.sh.in                           |   2 -
  scripts/showSamples.sh                             |   3 -
- 20 files changed, 181 insertions(+), 281 deletions(-)
+ 17 files changed, 183 insertions(+), 288 deletions(-)
  delete mode 100644 kconfig/Makefile
  create mode 100644 kconfig/Makefile.in
  mode change 100755 => 100644 scripts/build/companion_libs/210-expat.sh
  mode change 100755 => 100644 scripts/showSamples.sh
 
 diff --git a/Makefile.in b/Makefile.in
-index 76ed0da..52225a2 100644
+index 76ed0da..4c5eb26 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -139,7 +139,7 @@ clean: $(patsubst %,clean-%,$(TARGETS))
+@@ -31,6 +31,12 @@ CT_MAKEFLAGS += -Rr
+ endif # No rR
+ endif # No Rr
+ 
++# Helper: print abbreviation of the command by default, or full command
++# if doing 'make V=1'.
++__silent = $(if $(V),,@printf '  %-7s %s\n' '$1' '$(if $2,$2,$(strip $<))' && )
++__silent_rm = $(call __silent,RM,$1)rm -f $1
++__silent_rmdir = $(call __silent,RMDIR,$1)rm -rf $1
++
+ # Remove any suffix rules
+ .SUFFIXES:
+ 
+@@ -139,7 +145,7 @@ clean: $(patsubst %,clean-%,$(TARGETS))
  
  distclean: clean
  	@echo "  RM     'Makefile'"
@@ -40,7 +52,7 @@ index 76ed0da..52225a2 100644
  
  mrproper: distclean
  	@echo "  RM     'autostuff'"
-@@ -158,7 +158,6 @@ build-bin: $(PROG_NAME)             \
+@@ -158,7 +164,6 @@ build-bin: $(PROG_NAME)             \
             scripts/crosstool-NG.sh  \
             scripts/saveSample.sh    \
             scripts/showConfig.sh
@@ -48,7 +60,7 @@ index 76ed0da..52225a2 100644
  
  build-lib: config/configure.in  \
             paths.mk             \
-@@ -297,7 +296,7 @@ install-lib: $(DESTDIR)$(libdir)    \
+@@ -297,17 +302,13 @@ install-lib: $(DESTDIR)$(libdir)    \
  LIB_SUB_DIR := config contrib patches scripts
  $(patsubst %,install-lib-%-copy,$(LIB_SUB_DIR)): $(DESTDIR)$(libdir)
  	@echo "  INSTDIR '$(patsubst install-lib-%-copy,%,$(@))/'"
@@ -57,6 +69,32 @@ index 76ed0da..52225a2 100644
  	 |(cd "$(DESTDIR)$(libdir)"; tar xf -)
  
  # We need at least one command to make this rule kick-in.
+ install-lib-%: install-lib-%-copy
+ 	@true
+ 
+-install-lib-scripts: install-lib-scripts-copy
+-	@chmod a+x $(DESTDIR)$(libdir)/scripts/crosstool-NG.sh
+-	@chmod a+x $(DESTDIR)$(libdir)/scripts/saveSample.sh
+-
+ install-lib-main: $(DESTDIR)$(libdir) $(patsubst %,install-lib-%,$(LIB_SUB_DIR))
+ 	@echo "  INST    'steps.mk'"
+ 	@$(install) -m 644 steps.mk "$(DESTDIR)$(libdir)/steps.mk"
+@@ -339,11 +340,10 @@ install-lib-samples: $(DESTDIR)$(libdir) install-lib-main
+ 
+ KCONFIG_FILES := conf mconf nconf kconfig.mk
+ install-lib-kconfig: $(DESTDIR)$(libdir) install-lib-main
+-	@echo "  INST    'kconfig/'"
+-	@mkdir -p "$(DESTDIR)$(libdir)/kconfig"
+-	@for f in $(KCONFIG_FILES); do                                      \
+-	    install "kconfig/$${f}" "$(DESTDIR)$(libdir)/kconfig/$${f}";    \
+-	 done
++	$(call __silent,MKDIR,$@)$(install) -m 755 -d "$(DESTDIR)$(libdir)/kconfig"
++	$(call __silent,ENTER,kconfig)$(MAKE) -C kconfig install \
++		DESTDIR=$(DESTDIR)$(libdir)/kconfig
++	$(call __silent,LEAVE,kconfig):
+ 
+ install-doc: install-doc-$(if $(wildcard docs/MANUAL_ONLINE),message,real)
+ 
 diff --git a/configure.ac b/configure.ac
 index d10bf71..e034235 100644
 --- a/configure.ac
