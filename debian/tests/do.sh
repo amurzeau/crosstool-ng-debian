@@ -1,6 +1,5 @@
 # Manage the travis build
 # Override the log behaviour
-set -x
 sed -i -e 's/^.*\(CT_LOG_ERROR\).*$/# \1 is not set/' \
         -e 's/^.*\(CT_LOG_WARN\).*$/# \1 is not set/' \
         -e 's/^.*\(CT_LOG_INFO\).*$/# \1 is not set/' \
