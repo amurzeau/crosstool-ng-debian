@@ -1,4 +1,3 @@
-set +ex
 script_dir=$(readlink -e debian/tests)
 # Use dedicated directory, else the source tree can cause issues as ct-ng will try to use files provided in current directory.
 mkdir "${AUTOPKGTEST_TMP}/build" && cd "$_"

@@ -1,1 +1,2 @@
 Tests: arm-unknown-eabi
+Restrictions: allow-stderr
