@@ -42,4 +42,4 @@ sudo sed -i 's/script-config=.*/profile=sbuild/' ~/chroot/$CHROOT_NAME/etc/schro
 sudo sbuild-adduser $USER
 
 # Run sbuild to build the package, run lintian and then run autopkgtest
-sudo schroot -c "$CHROOT_NAME" -u $USER -- sbuild -As ../*.dsc -d $CHROOT_DIST --run-lintian --run-autopkgtest --autopkgtest-root-args= --autopkgtest-opts="-- schroot %r-%a-sbuild"
+sudo schroot -c "$CHROOT_NAME" -u $USER -- sbuild -v -As ../*.dsc -d $CHROOT_DIST --run-lintian --run-autopkgtest --autopkgtest-root-args= --autopkgtest-opts="-- schroot %r-%a-sbuild"
