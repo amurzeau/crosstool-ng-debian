@@ -1,0 +1,38 @@
+From: Alexis Murzeau <amubtdx@gmail.com>
+Date: Sat, 12 Aug 2023 14:50:58 +0200
+Subject: Fix configure warnings
+
+---
+ configure.ac | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 312f5e5..14cc2d3 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -93,7 +93,7 @@ AC_PROG_CC
+ AM_PROG_CC_C_O
+ AC_PROG_CXX
+ AC_PROG_CPP
+-AC_PROG_LEX
++AC_PROG_LEX(noyywrap)
+ AC_PROG_YACC
+ AS_IF([test -z "$CC" -o -z "$CXX"],
+       [AC_MSG_ERROR([no suitable compiler found])])
+@@ -300,13 +300,13 @@ CTNG_SET_KCONFIG_OPTION([sha512sum])
+ 
+ # FIXME why checking if not using the result? We don't provide replacemant malloc/alloca/...
+ AC_C_INLINE
+-AC_HEADER_STDC
++
+ AC_FUNC_MALLOC
+ AC_FUNC_REALLOC
+ AC_FUNC_ALLOCA
+ 
+-AM_GNU_GETTEXT([external])
+-AM_GNU_GETTEXT_VERSION([0.19.7])
++#AM_GNU_GETTEXT([external])
++#AM_GNU_GETTEXT_VERSION([0.19.7])
+ 
+ # For now, curses are needed to build kconfig. We may support a command-line
+ # only configuration without curses later. For now, fail in configure but
