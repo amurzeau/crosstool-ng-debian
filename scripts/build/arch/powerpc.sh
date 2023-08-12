@@ -7,23 +7,23 @@ CT_DoArchTupleValues () {
     # Only override values when ABI is not the default
     case "${CT_ARCH_powerpc_ABI}" in
         eabi)
-            # EABI is only for bare-metal, so libc ∈ [none,newlib]
+            # EABI is only for bare-metal, so libc ∈ [none,newlib,picolibc]
             CT_TARGET_SYS="eabi"
             ;;
         spe)
             case "${CT_LIBC}" in
-                none|newlib)    CT_TARGET_SYS="spe";;
+                none|newlib|picolibc)    CT_TARGET_SYS="elfspe";;
                 *glibc)         CT_TARGET_SYS="gnuspe";;
-                uClibc)         CT_TARGET_SYS="uclibcgnuspe";;
+                uClibc-ng)      CT_TARGET_SYS="uclibcgnuspe";;
             esac
             ;;
     esac
 
-    # Add extra flags for SPE if needed
+    # Add extra flags for SPE if needed. SPE is obsolete in GCC8.
     if [ "${CT_ARCH_powerpc_ABI_SPE}" = "y" ]; then
         CT_ARCH_TARGET_CFLAGS="-mabi=spe -mspe"
-        CT_ARCH_CC_CORE_EXTRA_CONFIG="--enable-e500_double"
-        CT_ARCH_CC_EXTRA_CONFIG="--enable-e500_double"
+        CT_ARCH_CC_CORE_EXTRA_CONFIG="--enable-e500_double --enable-obsolete"
+        CT_ARCH_CC_EXTRA_CONFIG="--enable-e500_double --enable-obsolete"
     fi
 }
 

@@ -1,7 +1,7 @@
 
 Before installing crosstool-NG, you may need to install additional packages on
 the host OS.  Specific instructions for several supported operating systems and
-distributions are provided [here](/docs/tutorials/).  Note that not all the
+distributions are provided [here](/docs/os-setup/).  Note that not all the
 dependencies are currently detected by the `configure` script; missing some of
 them may later result in failing `ct-ng build`.
 
@@ -143,11 +143,11 @@ completion. That shell fragment is currently not installed automatically.
 
 To install the shell script fragment, you have two options:
 
--   install system-wide, most probably by copying `ct-ng.comp` into
-    `/etc/bash_completion.d/`, or
+-   install system-wide, most probably by copying `./bash-completion/ct-ng`
+    into `/etc/bash_completion.d/`, or
 
--   install for a single user, by copying `ct-ng.comp` into `${HOME}/`
-    and sourcing this file from your `${HOME}/.bashrc`.
+-   install for a single user, by copying `./bash-completion/ct-ng` into
+    `${HOME}/` and sourcing this file from your `${HOME}/.bashrc`.
 
 Contributed code <a name="contributed-code"></a>
 ----------------

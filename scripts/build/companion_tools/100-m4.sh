@@ -1,16 +1,17 @@
 # Build script for m4
 
-do_companion_tools_m4_get() {
-    CT_GetFile "m4-${CT_M4_VERSION}"          \
-        {http,ftp,https}://ftp.gnu.org/gnu/m4
+do_companion_tools_m4_get()
+{
+    CT_Fetch M4
 }
 
-do_companion_tools_m4_extract() {
-    CT_Extract "m4-${CT_M4_VERSION}"
-    CT_Patch "m4" "${CT_M4_VERSION}"
+do_companion_tools_m4_extract()
+{
+    CT_ExtractPatch M4
 }
 
-do_companion_tools_m4_for_build() {
+do_companion_tools_m4_for_build()
+{
     CT_DoStep INFO "Installing m4 for build"
     CT_mkdir_pushd "${CT_BUILD_DIR}/build-m4-build"
     do_m4_backend \
@@ -22,7 +23,8 @@ do_companion_tools_m4_for_build() {
     CT_EndStep
 }
 
-do_companion_tools_m4_for_host() {
+do_companion_tools_m4_for_host()
+{
     CT_DoStep INFO "Installing m4 for host"
     CT_mkdir_pushd "${CT_BUILD_DIR}/build-m4-host"
     do_m4_backend \
@@ -34,11 +36,13 @@ do_companion_tools_m4_for_host() {
     CT_EndStep
 }
 
-do_m4_backend() {
+do_m4_backend()
+{
     local host
     local prefix
     local cflags
     local ldflags
+    local libs
 
     for arg in "$@"; do
         eval "${arg// /\\ }"
@@ -51,14 +55,21 @@ do_m4_backend() {
             # it includes system <spawn.h> but expects a locally-built
             # posix_spawn().
             ldflags="${ldflags} -lrt"
+            ;;
+        *-mingw32)
+            # m4 is built with stack smashing protection enabled which
+            # is not part of mingw-w64 c library in v7.0.0 and later.
+            libs="${libs} -lssp"
+            ;;
     esac
 
     CT_DoLog EXTRA "Configuring m4"
     CT_DoExecLog CFG \
                      CFLAGS="${cflags}" \
                      LDFLAGS="${ldflags}" \
+                     LIBS="${libs}" \
                      ${CONFIG_SHELL} \
-                     "${CT_SRC_DIR}/m4-${CT_M4_VERSION}/configure" \
+                     "${CT_SRC_DIR}/m4/configure" \
                      --host="${host}" \
                      --prefix="${prefix}"
 
