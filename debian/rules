@@ -13,12 +13,11 @@
 %:
 	dh $@ --with autoreconf
 
-# Make sure we call ./bootstrap before running dh_auto_configure
-override_dh_auto_configure:
-	test -e configure || ./bootstrap
+# Make sure we call ./bootstrap before running dh_autoreconf
+override_dh_autoreconf:
 	printf "echo %s-%s\n" $(shell dpkg-parsechangelog -SSource) $(shell dpkg-parsechangelog -SVersion) > version.sh
 	chmod a+x version.sh
-	dh_auto_configure
+	dh_autoreconf
 
 #Make sure to include bash completion file in the package
 #Boverride_dh_auto_install:
