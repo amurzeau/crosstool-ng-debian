@@ -2,25 +2,8 @@
 
 menu "C compiler"
 
-config CC
-    string
-    default "gcc"
-
-config CC_VERSION
-    string
-
-config CC_CORE_PASSES_NEEDED
+config CC_CORE_NEEDED
     bool
-    select CC_CORE_PASS_1_NEEDED
-    select CC_CORE_PASS_2_NEEDED
-
-config CC_CORE_PASS_1_NEEDED
-    bool
-
-config CC_CORE_PASS_2_NEEDED
-    bool
-
-source "config.gen/cc.in"
 
 config CC_SUPPORT_CXX
     bool
@@ -42,6 +25,8 @@ config CC_SUPPORT_OBJCXX
 
 config CC_SUPPORT_GOLANG
     bool
+
+source "config/gen/cc.in"
 
 comment "Additional supported languages:"
 
