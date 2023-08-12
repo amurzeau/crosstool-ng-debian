@@ -1,3 +1,14 @@
+crosstool-ng (1.25.0-1) UNRELEASED; urgency=medium
+
+  * add devcontainer for package development
+  * d/upstream: update signing-key
+  * d/gbp.conf use pristine-tar
+  * d/README.source: update using streamlink's instructions
+  * d/gbp.conf: use build-area for clean build
+  * New upstream version 1.25.0
+
+ -- Alexis Murzeau <amubtdx@gmail.com>  Sat, 12 Aug 2023 14:16:29 +0200
+
 crosstool-ng (1.23.0-1) unstable; urgency=low
 
   * Initial release
