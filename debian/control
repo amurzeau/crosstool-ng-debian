@@ -3,8 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Alexis Murzeau <amubtdx@gmail.com>
 Build-Depends: debhelper-compat (=13),
- dh-autoreconf,
- libncurses5-dev,
+ libncurses-dev,
  gperf,
  flex,
  texinfo,
@@ -13,7 +12,6 @@ Build-Depends: debhelper-compat (=13),
  bzip2,
  gettext,
  unzip,
- g++,
 # Dependencies from config/configure.in.in
  lzip,
  wget,
@@ -21,17 +19,14 @@ Build-Depends: debhelper-compat (=13),
  meson,
  ninja-build,
  rsync,
- make,
  libtool-bin,
  autoconf,
  automake,
- autotools-dev,
  python3,
  bison,
  device-tree-compiler,
  subversion,
- git,
- coreutils
+ git
 Standards-Version: 4.0.0
 Homepage: http://crosstool-ng.org/
 Vcs-Git: https://github.com/amurzeau/crosstool-ng-debian.git
