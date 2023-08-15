@@ -1,7 +1,7 @@
 Source: crosstool-ng
 Section: devel
 Priority: optional
-Maintainer: Alexis Murzeau <amubtdx@outlook.fr>
+Maintainer: Alexis Murzeau <amubtdx@gmail.com>
 Build-Depends: debhelper-compat (=13),
  dh-autoreconf,
  libncurses5-dev,
