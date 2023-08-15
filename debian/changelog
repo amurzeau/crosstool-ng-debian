@@ -1,13 +1,19 @@
-crosstool-ng (1.25.0-1) UNRELEASED; urgency=medium
+crosstool-ng (1.25.0-1) unstable; urgency=medium
 
-  * add devcontainer for package development
   * d/upstream: update signing-key
-  * d/gbp.conf use pristine-tar
-  * d/README.source: update using streamlink's instructions
-  * d/gbp.conf: use build-area for clean build
+  * d/gbp.conf use pristine-tar and build-area for clean build
+  * d/README.source: update build instructions
   * New upstream version 1.25.0
+  * d/patches: remove patches which are not needed anymore
+  * d/patches: add patch to fix autoreconf warnings
+  * d/gbp.conf: remove forced use of gzip
+  * d/control: update compat to 13
+  * d/control: update dependencies
+  * d/rules: use dh_autoreconf override instead of dh_auto_configure
+  * d/crosstool-ng.install: remove, not needed anymore
+  * d/docs: remove, files doesn't exist anymore
 
- -- Alexis Murzeau <amubtdx@gmail.com>  Sat, 12 Aug 2023 14:16:29 +0200
+ -- Alexis Murzeau <amubtdx@gmail.com>  Tue, 15 Aug 2023 19:42:22 +0200
 
 crosstool-ng (1.23.0-1) unstable; urgency=low
 
